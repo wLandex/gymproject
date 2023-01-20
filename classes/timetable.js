@@ -31,7 +31,7 @@ class timetable {
   }
 
   async getTaskByID(id) {
-    return timeTableCollection.findOne({ _id: id });
+    return await timeTableCollection.findOne({ _id: id });
   }
 
   async removeTaskByID(id) {
@@ -41,7 +41,7 @@ class timetable {
     return await timeTableCollection.remove(filter);
   }
   async changeTask(id, changes) {
-    return timeTableCollection.updateOne({ _id: id }, { $set: changes });
+    return await timeTableCollection.updateOne({ _id: id }, { $set: changes });
   }
 }
 
