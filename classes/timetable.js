@@ -1,47 +1,41 @@
-const timeTableCollection = require("../models/timeTable");
+const taskCollection = require("../models/taskCollection");
+const timeTableCollection = require("../models/timeTableCollection");
 
 class timetable {
-  constructor(name, DB) {
+  constructor(name, parentID) {
     this.name = name;
-    this.DB = DB;
+    this.timeTableID = parentID;
   }
 
-  /**
-   *
-   * @param {
-   *         name : string,
-   *         description: string
-   * } data
-   */
   async addTask(data) {
-    console.log(data);
-
+    data.timeTableID = this.id;
     if (data.name && data.description)
-      return await timeTableCollection.insertMany([data]);
+      return await taskCollection.insertMany([data]);
     else {
       throw new Error("Invalid data must be named");
     }
   }
   async getTasks(filter) {
-    return await timeTableCollection.find(filter);
+    return await taskCollection.find(filter);
   }
 
   async getTask(filter) {
-    return await timeTableCollection.findOne(filter);
+    return await taskCollection.findOne(filter);
   }
 
   async getTaskByID(id) {
-    return await timeTableCollection.findOne({ _id: id });
+    return await taskCollection.findOne({ _id: id });
   }
 
   async removeTaskByID(id) {
-    return await timeTableCollection.remove({ _id: id });
+    return await taskCollection.remove({ _id: id });
   }
   async removeTasks(filter) {
-    return await timeTableCollection.remove(filter);
+    return await taskCollection.remove(filter);
   }
   async changeTask(id, changes) {
-    return await timeTableCollection.updateOne({ _id: id }, { $set: changes });
+    let result = await taskCollection.updateOne({ _id: id }, { $set: changes });
+    return await this.getTaskByID(id);
   }
 }
 

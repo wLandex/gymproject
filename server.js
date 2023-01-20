@@ -2,10 +2,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const DB = require("./classes/db.js");
 const TimeTable = require("./classes/timetable.js");
-
-const timeTableDb = new DB();
+const timeTableCollection = require("./models/timeTableCollection");
+const taskCollection = require("./models/taskCollection");
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -19,63 +18,82 @@ mongoose
     console.error("MongoDB connection error", err.message);
   });
 
-let timetable = new TimeTable("Anya", timeTableDb);
-
-// const id1 = ann.addTask({ name: "Занятие в зале", description: "3 по 15" });
-// const id2 = ann.addTask({ name: "Занятие на улице", description: "Бег" });
-// const id3 = ann.addTask({ name: "Занятие в зале", description: "12 sdf" });
-
 const app = express();
+app.listen(8000);
 app.use(bodyParser.json());
 
-app.get("/", (req, res) => {
-  res.send("You on root path");
-});
-
-app.get("/timetable/tasks", async (req, res) => {
-  res.json(await timetable.getTasks());
-});
-
-app.listen(8000, () => {
-  console.log("listened on 8000");
-});
-
-app.post("/timetable/tasks", async (req, res) => {
+async function findTimeTable(filter = {}) {
   try {
-    await timetable.addTask({
-      name: req.body.name,
-      description: req.body.description,
-    });
-    res.send();
-  } catch (err) {
-    res.status(400);
-    res.json({ errorMessage: err.message });
+    if ((await timeTableCollection.find(filter)).length !== 0) return true;
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+app.use(bodyParser.json());
+
+app.get("/timetables", async (req, res) => {
+  try {
+    res.json(await timeTableCollection.find());
+  } catch {
+    res.sendStatus(204);
   }
 });
 
-app.put("/timetable/tasks/:id", async (req, res) => {
-  let id = req.params.id;
-  console.log(req.params.id);
-  let result = await timetable.changeTask(id, req.body);
-  res.json(result);
-  // console.log(req.body);
-  // res.send(req.body);
+app.post("/timetables", async (req, res) => {
+  if ((await findTimeTable({ name: req.body.name })) || req.body.name === "") {
+    res.sendStatus(401);
+    return;
+  }
+  try {
+    let result = await timeTableCollection.insertMany([
+      { name: req.body.name },
+    ]);
+    res.sendStatus(200);
+  } catch {
+    res.sendStatus(500);
+  }
 });
 
-app.delete("/timetable/tasks/:id", async (req, res) => {
-  await timetable.removeTaskByID(req.params.id);
-  res.sendStatus(200);
+app.get("/timetables/:ttID", async (req, res) => {
+  try {
+    let result = await timeTableCollection.find({ _id: req.params.ttID });
+    res.json(result);
+  } catch {
+    res.sendStatus(400);
+  }
 });
 
-// app.get("*", (req, res) => {
-//   res.status(404).json({ path: "invalid path in get" });
-// });
-
-app.get("/timetable/tasks/:id", async (req, res) => {
-  const task = await timetable.getTaskByID(req.params.id);
-  res.json(task);
+app.get("/timetables/:ttID/tasks", async (req, res) => {
+  if (await timeTableCollection.find({ _id: req.params.ttID })) {
+    try {
+      console.log(req.params.ttID);
+      res.send(await taskCollection.find({ timeTableID: req.params.ttID }));
+      return;
+    } catch {
+      res.send(204);
+    }
+  } else {
+    res.send(400);
+  }
 });
 
-app.use((req, res) => {
-  res.status(404).json({ path: "invalid path" });
+app.post("/timetables/:ttID/tasks", async (req, res) => {
+  if (await timeTableCollection.find({ _id: req.params.ttID })) {
+    if (req.body.name && req.body.description) {
+      await taskCollection.insertMany([
+        {
+          name: req.body.name,
+          description: req.body.description,
+          timeTableID: req.params.ttID,
+        },
+      ]);
+      res.sendStatus(200);
+    } else {
+      res.sendStatus(401);
+    }
+  } else {
+    res.send(400);
+  }
 });
