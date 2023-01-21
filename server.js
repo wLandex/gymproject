@@ -2,9 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const TimeTable = require("./classes/timetable.js");
-const timeTableCollection = require("./models/timeTableCollection");
-const taskCollection = require("./models/taskCollection");
+const tasks = require("./classes/taskCollection.js");
+
+const timeTableCollection = require("./models/timeTableCollectionModel");
+const taskCollectionModel = require("./models/taskCollectionModel");
+const { send } = require("process");
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -31,11 +33,24 @@ async function findTimeTable(filter = {}) {
   }
 }
 
-app.use(bodyParser.json());
-
 app.get("/timetables", async (req, res) => {
   try {
     res.json(await timeTableCollection.find());
+  } catch {
+    res.sendStatus(204);
+  }
+});
+
+app.delete("/timetables", async (req, res) => {
+  try {
+    if (await timeTableCollection.find()) {
+      await timeTableCollection.deleteMany({});
+      await tasks.removeTasks({});
+      res.send(200);
+      return;
+    }
+    res.send(204);
+    return;
   } catch {
     res.sendStatus(204);
   }
@@ -65,11 +80,30 @@ app.get("/timetables/:ttID", async (req, res) => {
   }
 });
 
+app.get("/timetables/:ttID", async (req, res) => {
+  try {
+    let result = await timeTableCollection.find({ _id: req.params.ttID });
+    res.json(result);
+  } catch {
+    res.sendStatus(400);
+  }
+});
+
+app.delete("/timetables/:ttID", async (req, res) => {
+  try {
+    await timeTableCollection.deleteMany({ _id: req.params.ttID });
+    await tasks.removeTasks({ timeTableID: req.params.ttID });
+    res.send(200);
+  } catch {
+    res.sendStatus(400);
+  }
+});
+
 app.get("/timetables/:ttID/tasks", async (req, res) => {
   if (await timeTableCollection.find({ _id: req.params.ttID })) {
     try {
       console.log(req.params.ttID);
-      res.send(await taskCollection.find({ timeTableID: req.params.ttID }));
+      res.send(await tasks.getTasks({ timeTableID: req.params.ttID }));
       return;
     } catch {
       res.send(204);
@@ -79,20 +113,68 @@ app.get("/timetables/:ttID/tasks", async (req, res) => {
   }
 });
 
+app.delete("/timetables/:ttID/tasks", async (req, res) => {
+  if (await timeTableCollection.find({ _id: req.params.ttID })) {
+    try {
+      await tasks.removeTasks({ timeTableID: req.params.ttID });
+      res.sendStatus(200);
+    } catch {
+      res.send(500);
+    }
+  } else {
+    res.send(400);
+  }
+});
+
 app.post("/timetables/:ttID/tasks", async (req, res) => {
   if (await timeTableCollection.find({ _id: req.params.ttID })) {
     if (req.body.name && req.body.description) {
-      await taskCollection.insertMany([
-        {
-          name: req.body.name,
-          description: req.body.description,
-          timeTableID: req.params.ttID,
-        },
-      ]);
+      await tasks.addTask({
+        name: req.body.name,
+        description: req.body.description,
+        timeTableID: req.params.ttID,
+      });
       res.sendStatus(200);
     } else {
       res.sendStatus(401);
     }
+  } else {
+    res.send(400);
+  }
+});
+
+app.get("/timetables/:ttID/tasks/:taskID", async (req, res) => {
+  if (await timeTableCollection.find({ _id: req.params.ttID })) {
+    try {
+      res.json(await tasks.getTaskByID(req.params.taskID));
+    } catch {
+      res.sendStatus(400);
+    }
+  } else {
+    res.send(400);
+  }
+});
+
+app.delete("/timetables/:ttID/tasks/:taskID", async (req, res) => {
+  if (await timeTableCollection.find({ _id: req.params.ttID })) {
+    await tasks.removeTaskByID(req.params.taskID);
+    res.sendStatus(200);
+  } else {
+    res.send(400);
+  }
+});
+
+app.put("/timetables/:ttID/tasks/:taskID", async (req, res) => {
+  if (
+    (await timeTableCollection.find({ _id: req.params.ttID })) &&
+    (await tasks.getTasks({ _id: req.params.taskID })).length > 0
+  ) {
+    await tasks.changeTask(req.params.taskID, {
+      name: req.body.name,
+      description: req.body.description,
+    });
+
+    res.sendStatus(200);
   } else {
     res.send(400);
   }
