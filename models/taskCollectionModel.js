@@ -1,6 +1,6 @@
 const { Schema, model } = require("mongoose");
 
-const timetableSchema = new Schema(
+const tasksCollection = new Schema(
   {
     name: {
       type: String,
@@ -10,8 +10,12 @@ const timetableSchema = new Schema(
       type: String,
       required: true,
     },
+    timeTableID: {
+      type: Schema.Types.ObjectId,
+      required: true,
+    },
   },
   { versionKey: false }
 );
 
-module.exports = model("timetables", timetableSchema);
+module.exports = model("tasks", tasksCollection);
