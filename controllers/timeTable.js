@@ -115,31 +115,45 @@ const timeTableController = {
   },
 
   async deleteTasks(req, res) {
-    if (await timeTable.getTimetableByID(req.params.ttID)) {
+    try {
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
       try {
-        await tasks.removeTasks({ timeTableID: req.params.ttID });
+        await tasks.removeTasks({
+          timeTableID: req.params.ttID,
+        });
         res.sendStatus(200);
       } catch {
         res.sendStatus(500);
       }
-    } else {
+    } catch {
       res.sendStatus(400);
     }
   },
 
-  async createTasks(req, res) {
-    if (await timeTable.getTimetableByID(req.params.ttID)) {
-      if (req.body.name && req.body.description) {
-        await tasks.addTask({
-          name: req.body.name,
-          description: req.body.description,
-          timeTableID: req.params.ttID,
-        });
-        res.sendStatus(200);
-      } else {
-        res.sendStatus(401);
+  async createTask(req, res) {
+    try {
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+      Joi.attempt(
+        { name: req.body.name, description: req.body.description },
+        validatationSchemas.nameDescSchema
+      );
+      try {
+        if (await timeTable.getTimetableByID(req.params.ttID)) {
+          let result = await tasks.addTask({
+            name: req.body.name,
+            description: req.body.description,
+            timeTableID: req.params.ttID,
+          });
+          console.log(result);
+          res.status(200).json(result);
+        } else {
+          res.sendStatus(400);
+          return;
+        }
+      } catch {
+        res.send(500);
       }
-    } else {
+    } catch {
       res.sendStatus(400);
     }
   },

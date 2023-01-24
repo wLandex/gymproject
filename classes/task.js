@@ -2,10 +2,10 @@ const taskCollection = require("../models/taskCollectionModel");
 
 timetable = {
   async addTask(data) {
-    if (data.name && data.description)
+    try {
       return await taskCollection.insertMany([data]);
-    else {
-      throw new Error("Invalid data must be named");
+    } catch {
+      throw new Error("DB error");
     }
   },
   async getTasks(filter) {

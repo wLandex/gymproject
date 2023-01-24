@@ -37,7 +37,7 @@ app.delete("/timetables/:ttID/tasks", timeTableController.deleteTasks);
 
 app.delete("/timetables/:ttID", timeTableController.deleteByID);
 
-app.post("/timetables/:ttID/tasks", timeTableController.createTasks);
+app.post("/timetables/:ttID/tasks", timeTableController.createTask);
 
 app.get("/timetables/:ttID/tasks", timeTableController.getTasks);
 

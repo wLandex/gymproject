@@ -32,6 +32,10 @@ module.exports = {
     }
   },
   async removeTasks(filter) {
-    return await timeTabelModel.deleteMany(filter);
+    try {
+      return await timeTabelModel.deleteMany(filter);
+    } catch {
+      throw new Error("DB error");
+    }
   },
 };
