@@ -9,13 +9,12 @@ module.exports = {
     }
   },
   async getTimetables(filter = {}) {
-    return await timeTabelModel.find(filter);
+    try {
+      return await timeTabelModel.find(filter);
+    } catch {
+      throw new Error("DB error");
+    }
   },
-
-  async getTimetable(filter) {
-    return await timeTabelModel.findOne(filter);
-  },
-
   async getTimetableByID(id) {
     try {
       return await timeTabelModel.findOne({ _id: id });
