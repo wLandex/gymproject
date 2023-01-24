@@ -25,7 +25,11 @@ module.exports = {
   },
 
   async removeTimetableByID(id) {
-    return await timeTabelModel.deleteMany({ _id: id });
+    try {
+      return await timeTabelModel.deleteMany({ _id: id });
+    } catch {
+      throw new Error("DB error");
+    }
   },
   async removeTasks(filter) {
     return await timeTabelModel.deleteMany(filter);

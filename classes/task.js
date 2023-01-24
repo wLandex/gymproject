@@ -24,7 +24,11 @@ timetable = {
     return await taskCollection.deleteMany({ _id: id });
   },
   async removeTasks(filter) {
-    return await taskCollection.deleteMany(filter);
+    try {
+      return await taskCollection.deleteMany(filter);
+    } catch {
+      throw new Error("DB error");
+    }
   },
   async changeTask(id, changes) {
     let result = await taskCollection.updateOne({ _id: id }, { $set: changes });

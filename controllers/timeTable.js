@@ -1,5 +1,6 @@
 const { validateHeaderValue } = require("http");
 const Joi = require("joi");
+const { reset } = require("nodemon");
 const tasks = require("../classes/task.js");
 const timeTable = require("../classes/timeTable.js");
 const validatationSchemas = require("../validationSchemas.js");
@@ -34,17 +35,12 @@ const timeTableController = {
       try {
         let result = await timeTable.getTimetableByID(req.params.ttID);
         if (!result) {
-          res.sendStatus(204);
+          res.sendStatus(404);
           return;
         }
         res.json(result);
       } catch (e) {
-        if (e.message === "DB error") {
-          res.sendStatus(500);
-          return;
-        }
-        res.sendStatus(404);
-        return;
+        res.sendStatus(500);
       }
     } catch {
       res.sendStatus(400);
@@ -69,12 +65,33 @@ const timeTableController = {
   },
 
   async deleteByID(req, res) {
+    //Checking for validation
     try {
-      console.log(req.params.id);
-      await timeTable.removeTimetableByID(req.params.ttID);
-      //BUG
-      await tasks.removeTasks({ timeTableID: req.params.ttID });
-      res.sendStatus(200);
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+
+      try {
+        let result = await timeTable.getTimetableByID(req.params.ttID);
+        if (!result) {
+          res.sendStatus(404);
+          return;
+        }
+        try {
+          let deletedTimeTablesInfo = await timeTable.removeTimetableByID(
+            req.params.ttID
+          );
+          let deletedTasksInfo = await tasks.removeTasks({
+            timeTableID: req.params.ttID,
+          });
+          res.status(200).json([
+            { about: "DeletedTimeTables", ...deletedTimeTablesInfo },
+            { about: "DeletedTasks", ...deletedTasksInfo },
+          ]);
+        } catch {
+          res.sendStatus(500);
+        }
+      } catch {
+        res.sendStatus(500);
+      }
     } catch {
       res.sendStatus(400);
     }
