@@ -2,9 +2,10 @@ const timeTabelModel = require("../models/timeTableCollectionModel.js");
 
 module.exports = {
   async addTimetable(data) {
-    if (data.name) return await timeTabelModel.insertMany([data]);
-    else {
-      throw new Error("Invalid data must be named");
+    try {
+      return await timeTabelModel.insertMany([data]);
+    } catch {
+      throw new Error("DB error");
     }
   },
   async getTimetables(filter = {}) {

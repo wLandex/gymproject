@@ -1,3 +1,4 @@
+const { validateHeaderValue } = require("http");
 const Joi = require("joi");
 const tasks = require("../classes/task.js");
 const timeTable = require("../classes/timeTable.js");
@@ -29,11 +30,11 @@ const timeTableController = {
     //Checking for validation
     try {
       Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
-      //Trying to find in DB
+
       try {
         let result = await timeTable.getTimetableByID(req.params.ttID);
         if (!result) {
-          res.sendStatus(404);
+          res.sendStatus(204);
           return;
         }
         res.json(result);
@@ -51,14 +52,19 @@ const timeTableController = {
   },
 
   async create(req, res) {
+    //Checking for validation
     try {
-      let addedTimetable = await timeTable.addTimetable({
-        name: req.body.name,
-      });
-
-      res.json(addedTimetable);
-    } catch {
-      res.sendStatus(400);
+      Joi.attempt({ name: req.body.name }, validatationSchemas.nameSchema);
+      try {
+        let addedTimetable = await timeTable.addTimetable({
+          name: req.body.name,
+        });
+        res.status(201).json(addedTimetable);
+      } catch (e) {
+        res.sendStatus(500);
+      }
+    } catch (e) {
+      res.status(400).json({ message: e.message });
     }
   },
 

@@ -5,9 +5,13 @@ const validatationSchemas = {
     id: Joi.string().min(24).max(24).required().alphanum(),
   }),
 
-  namedesSchema: Joi.object({
-    name: Joi.string().min(6).max(30).alphanum().required(),
-    description: Joi.string().min(6).alphanum().required().max(50),
+  nameDescSchema: Joi.object({
+    name: Joi.string().min(6).max(25).required(),
+    description: Joi.string().min(6).max(50).required(),
+  }),
+
+  nameSchema: Joi.object({
+    name: Joi.string().min(6).max(25).required(),
   }),
 };
 
