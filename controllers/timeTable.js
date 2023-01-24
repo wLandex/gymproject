@@ -151,20 +151,31 @@ const timeTableController = {
           return;
         }
       } catch {
-        res.send(500);
+        res.sendStatus(500);
       }
     } catch {
       res.sendStatus(400);
     }
   },
   async getTaskByID(req, res) {
-    if (await timeTable.getTimetableByID(req.params.ttID)) {
+    //FIX when trying to pass 63d0306905151a3266473a3y validation dont work because of last number.
+    try {
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+      Joi.attempt({ id: req.params.taskID }, validatationSchemas.idSchema);
       try {
-        res.json(await tasks.getTaskByID(req.params.taskID));
-      } catch {
-        res.sendStatus(400);
+        if (
+          (await timeTable.getTimetableByID(req.params.ttID)) &&
+          (await tasks.getTaskByID(req.params.taskID))
+        ) {
+          let result = await tasks.getTaskByID(req.params.taskID);
+          res.json(result);
+        } else {
+          res.sendStatus(400);
+        }
+      } catch (e) {
+        res.sendStatus(500);
       }
-    } else {
+    } catch {
       res.sendStatus(400);
     }
   },
