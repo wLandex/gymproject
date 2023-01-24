@@ -1,5 +1,7 @@
+const Joi = require("joi");
 const tasks = require("../classes/task.js");
 const timeTable = require("../classes/timeTable.js");
+const validatationSchemas = require("../validationSchemas.js");
 
 const timeTableController = {
   async getAll(req, res) {
@@ -24,9 +26,25 @@ const timeTableController = {
     }
   },
   async getByID(req, res) {
+    //Checking for validation
     try {
-      let result = await timeTable.getTimetableByID(req.params.ttID);
-      res.json(result);
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+      //Trying to find in DB
+      try {
+        let result = await timeTable.getTimetableByID(req.params.ttID);
+        if (!result) {
+          res.sendStatus(404);
+          return;
+        }
+        res.json(result);
+      } catch (e) {
+        if (e.message === "DB error") {
+          res.sendStatus(500);
+          return;
+        }
+        res.sendStatus(404);
+        return;
+      }
     } catch {
       res.sendStatus(400);
     }

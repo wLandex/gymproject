@@ -16,7 +16,11 @@ module.exports = {
   },
 
   async getTimetableByID(id) {
-    return await timeTabelModel.findOne({ _id: id });
+    try {
+      return await timeTabelModel.findOne({ _id: id });
+    } catch {
+      throw new Error("DB error");
+    }
   },
 
   async removeTimetableByID(id) {
