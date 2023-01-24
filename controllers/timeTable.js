@@ -6,9 +6,14 @@ const validatationSchemas = require("../validationSchemas.js");
 const timeTableController = {
   async getAll(req, res) {
     try {
-      res.json(await timeTable.getTimetables());
-    } catch {
+      let result = await timeTable.getTimetables();
+      if (result.length) {
+        res.json(result);
+        return;
+      }
       res.sendStatus(204);
+    } catch {
+      res.sendStatus(500);
     }
   },
   async delete(req, res) {
