@@ -48,4 +48,4 @@ app.delete(
   timeTableController.deleteTaskByID
 );
 //FIX
-// app.put("/timetables/:ttID/tasks/:taskID", timeTableCollection.changeTaskByID);
+app.put("/timetables/:ttID/tasks/:taskID", timeTableController.changeTaskByID);

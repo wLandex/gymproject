@@ -144,7 +144,7 @@ const timeTableController = {
             description: req.body.description,
             timeTableID: req.params.ttID,
           });
-          console.log(result);
+
           res.status(200).json(result);
         } else {
           res.sendStatus(400);
@@ -186,7 +186,6 @@ const timeTableController = {
       Joi.attempt({ id: req.params.taskID }, validatationSchemas.idSchema);
       try {
         const deletedTask = await tasks.removeTaskByID(req.params.taskID);
-        console.log(deletedTask);
         res.json(deletedTask);
       } catch {
         res.sendStatus(500);
@@ -196,17 +195,26 @@ const timeTableController = {
     }
   },
   async changeTaskByID(req, res) {
-    if (
-      (await timeTable.getTimetableByID(req.params.ttID)) &&
-      (await tasks.getTasks({ _id: req.params.taskID })).length > 0
-    ) {
-      await tasks.changeTask(req.params.taskID, {
-        name: req.body.name,
-        description: req.body.description,
-      });
-
-      res.sendStatus(200);
-    } else {
+    try {
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+      Joi.attempt({ id: req.params.taskID }, validatationSchemas.idSchema);
+      Joi.attempt(
+        { name: req.body.name, description: req.body.description },
+        validatationSchemas.nameDescSchema
+      );
+      try {
+        if (!(await tasks.getTaskByID(req.params.taskID))) {
+          res.sendStatus(400);
+          return;
+        }
+        const changedTask = await tasks.changeTask(req.params.taskID, {
+          name: req.body.name,
+          description: req.body.description,
+        });
+      } catch {
+        res.sendStatus(500);
+      }
+    } catch {
       res.sendStatus(400);
     }
   },

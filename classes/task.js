@@ -31,8 +31,15 @@ timetable = {
     }
   },
   async changeTask(id, changes) {
-    let result = await taskCollection.updateOne({ _id: id }, { $set: changes });
-    return await this.getTaskByID(id);
+    try {
+      let result = await taskCollection.updateOne(
+        { _id: id },
+        { $set: changes }
+      );
+      return await this.getTaskByID(id);
+    } catch {
+      throw new Error("DB error");
+    }
   },
 };
 
