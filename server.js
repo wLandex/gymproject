@@ -7,7 +7,7 @@ const tasks = require("./classes/task.js");
 const timeTableCollection = require("./models/timeTableCollectionModel");
 const taskCollectionModel = require("./models/taskCollectionModel");
 
-const timeTableContoller = require("./controllers/timeTable.js");
+const timeTableController = require("./controllers/timeTable.js");
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -25,25 +25,27 @@ const app = express();
 app.listen(8000);
 app.use(bodyParser.json());
 
-app.get("/timetables", timeTableContoller.getAll);
+app.get("/timetables", timeTableController.getAll);
 
-app.delete("/timetables", timeTableContoller.create);
+app.post("/timetables", timeTableController.create);
 
-app.get("/timetables/:ttID", timeTableContoller.getByID);
+app.delete("/timetables", timeTableController.delete);
 
-app.delete("/timetables/:ttID", timeTableContoller.deleteByID);
+app.get("/timetables/:ttID", timeTableController.getByID);
 
-app.get("/timetables/:ttID/tasks", timeTableContoller.getTasks);
+app.delete("/timetables/:ttID/tasks", timeTableController.deleteTasks);
 
-app.delete("/timetables/:ttID/tasks", timeTableContoller.deleteTasks);
+app.delete("/timetables/:ttID", timeTableController.deleteByID);
 
-app.post("/timetables/:ttID/tasks", timeTableContoller.createTasks);
+app.post("/timetables/:ttID/tasks", timeTableController.createTasks);
 
-app.get("/timetables/:ttID/tasks/:taskID", timeTableContoller.getTaskByID);
+app.get("/timetables/:ttID/tasks", timeTableController.getTasks);
+
+app.get("/timetables/:ttID/tasks/:taskID", timeTableController.getTaskByID);
 
 app.delete(
   "/timetables/:ttID/tasks/:taskID",
-  timeTableContoller.deleteTaskByID
+  timeTableController.deleteTaskByID
 );
-
-app.put("/timetables/:ttID/tasks/:taskID", timeTableCollection.changeTaskByID);
+//FIX
+// app.put("/timetables/:ttID/tasks/:taskID", timeTableCollection.changeTaskByID);

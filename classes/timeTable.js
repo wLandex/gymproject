@@ -1,4 +1,4 @@
-const timeTabelModel = require("../models/timeTable.js");
+const timeTabelModel = require("../models/timeTableCollectionModel.js");
 
 module.exports = {
   async addTimetable(data) {
