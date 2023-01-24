@@ -1,6 +1,4 @@
-const { validateHeaderValue } = require("http");
 const Joi = require("joi");
-const { reset } = require("nodemon");
 const tasks = require("../classes/task.js");
 const timeTable = require("../classes/timeTable.js");
 const validatationSchemas = require("../validationSchemas.js");
@@ -98,15 +96,20 @@ const timeTableController = {
   },
 
   async getTasks(req, res) {
-    if (await timeTable.getTimetableByID(req.params.ttID)) {
+    //Checking for validation
+    try {
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
       try {
-        console.log(req.params.ttID);
-        res.send(await tasks.getTasks({ timeTableID: req.params.ttID }));
-        return;
+        let result = await tasks.getTasks({ timeTableID: req.params.ttID });
+        if (!result.length) {
+          res.sendStatus(204);
+          return;
+        }
+        res.json(result);
       } catch {
-        res.sendStatus(204);
+        res.sendStatus(500);
       }
-    } else {
+    } catch {
       res.sendStatus(400);
     }
   },
