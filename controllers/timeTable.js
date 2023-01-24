@@ -158,7 +158,7 @@ const timeTableController = {
     }
   },
   async getTaskByID(req, res) {
-    //FIX when trying to pass 63d0306905151a3266473a3y validation dont work because of last number.
+    //FIX when trying to pass 63d0306905151a3266473a3y validation dont work because of last symbol.
     try {
       Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
       Joi.attempt({ id: req.params.taskID }, validatationSchemas.idSchema);
@@ -181,10 +181,17 @@ const timeTableController = {
   },
 
   async deleteTaskByID(req, res) {
-    if (await timeTable.getTimetableByID(req.params.ttID)) {
-      await tasks.removeTaskByID(req.params.taskID);
-      res.sendStatus(200);
-    } else {
+    try {
+      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+      Joi.attempt({ id: req.params.taskID }, validatationSchemas.idSchema);
+      try {
+        const deletedTask = await tasks.removeTaskByID(req.params.taskID);
+        console.log(deletedTask);
+        res.json(deletedTask);
+      } catch {
+        res.sendStatus(500);
+      }
+    } catch {
       res.sendStatus(400);
     }
   },
