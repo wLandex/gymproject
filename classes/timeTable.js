@@ -31,7 +31,7 @@ module.exports = {
       throw new Error("DB error");
     }
   },
-  async removeTasks(filter) {
+  async removeTimeTables(filter) {
     try {
       return await timeTabelModel.deleteMany(filter);
     } catch {

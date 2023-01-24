@@ -18,16 +18,11 @@ const timeTableController = {
   },
   async delete(req, res) {
     try {
-      if (await timeTable.getTimetable()) {
-        await timeTable.removeTasks({});
-        await tasks.removeTasks({});
-        res.sendStatus(200);
-        return;
-      }
-      res.sendStatus(204);
-      return;
+      await timeTable.removeTimeTables({});
+      await tasks.removeTasks({});
+      res.sendStatus(200);
     } catch {
-      res.sendStatus(204);
+      res.sendStatus(500);
     }
   },
   async getByID(req, res) {
