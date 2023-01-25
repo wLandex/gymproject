@@ -1,28 +1,40 @@
-const timeTabelModel = require("../models/timeTable.js");
+const timeTabelModel = require("../models/timeTableCollectionModel.js");
 
 module.exports = {
   async addTimetable(data) {
-    if (data.name) return await timeTabelModel.insertMany([data]);
-    else {
-      throw new Error("Invalid data must be named");
+    try {
+      return await timeTabelModel.insertMany([data]);
+    } catch {
+      throw new Error("DB error");
     }
   },
   async getTimetables(filter = {}) {
-    return await timeTabelModel.find(filter);
+    try {
+      return await timeTabelModel.find(filter);
+    } catch {
+      throw new Error("DB error");
+    }
   },
-
-  async getTimetable(filter) {
-    return await timeTabelModel.findOne(filter);
-  },
-
   async getTimetableByID(id) {
-    return await timeTabelModel.findOne({ _id: id });
+    try {
+      return await timeTabelModel.findOne({ _id: id });
+    } catch {
+      throw new Error("DB error");
+    }
   },
 
   async removeTimetableByID(id) {
-    return await timeTabelModel.deleteMany({ _id: id });
+    try {
+      return await timeTabelModel.deleteMany({ _id: id });
+    } catch {
+      throw new Error("DB error");
+    }
   },
-  async removeTasks(filter) {
-    return await timeTabelModel.deleteMany(filter);
+  async removeTimeTables(filter) {
+    try {
+      return await timeTabelModel.deleteMany(filter);
+    } catch {
+      throw new Error("DB error");
+    }
   },
 };
