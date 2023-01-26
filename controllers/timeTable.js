@@ -65,6 +65,7 @@ const timeTableController = {
       try {
         let result = await timeTable.getTimetableByID(req.params.ttID);
         if (!result) {
+          console.log(result, "----result");
           res.sendStatus(404);
           return;
         }

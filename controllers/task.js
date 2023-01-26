@@ -1,3 +1,4 @@
+const { date } = require("joi");
 const Joi = require("joi");
 const tasks = require("../classes/task.js");
 const timeTable = require("../classes/timeTable.js");
@@ -48,11 +49,23 @@ const taskController = {
       );
       try {
         if (await timeTable.getTimetableByID(req.params.ttID)) {
-          let result = await tasks.addTask({
-            name: req.body.name,
-            description: req.body.description,
-            timeTableID: req.params.ttID,
-          });
+          let result;
+
+          if (req.body.date) {
+            let date = new Date(req.body.date);
+            result = await tasks.addTask({
+              name: req.body.name,
+              description: req.body.description,
+              timeTableID: req.params.ttID,
+              date,
+            });
+          } else {
+            result = await tasks.addTask({
+              name: req.body.name,
+              description: req.body.description,
+              timeTableID: req.params.ttID,
+            });
+          }
 
           res.status(200).json(result);
         } else {

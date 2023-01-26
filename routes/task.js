@@ -1,11 +1,13 @@
 const validator = require("../middleWares/validator.js");
 const taskController = require("../controllers/task.js");
 const validationSchemas = require("../validationSchemas.js");
+const { date } = require("joi");
 
 module.exports = function (router) {
   router.delete(
     "/timetables/:ttID/tasks",
-    validator({ params: validationSchemas.idSchema })
+    validator({ params: validationSchemas.idSchema }),
+    taskController.deleteTasks
   );
 
   router.post(

@@ -6,6 +6,8 @@ const validatationSchemas = {
   }),
 
   nameDescSchema: Joi.object({
+    date: Joi.date().greater("12-12-2020"),
+
     name: Joi.string().min(6).max(25).required(),
     description: Joi.string().min(6).max(50).required(),
   }),
