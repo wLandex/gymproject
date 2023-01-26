@@ -12,14 +12,26 @@ module.exports = function (schema) {
       }
     }
     if (schema.params) {
+      console.log("he");
       try {
-        Joi.attempt(req.params, schema.params);
+        Joi.attempt({ id: req.params.ttID }, schema.params);
       } catch (e) {
         return res
           .status(400)
           .json({ reason: "Invalid params", message: e.message });
       }
     }
+    if (schema.params2) {
+      try {
+        Joi.attempt({ id: req.params.ttID }, schema.params2);
+        Joi.attempt({ id: req.params.taskID }, schema.params2);
+      } catch (e) {
+        return res
+          .status(400)
+          .json({ reason: "Invalid params", message: e.message });
+      }
+    }
+
     next();
   };
 };

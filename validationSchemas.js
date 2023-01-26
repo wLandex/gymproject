@@ -2,7 +2,7 @@ const Joi = require("joi");
 
 const validatationSchemas = {
   idSchema: Joi.object({
-    id: Joi.string().min(24).max(24).required().alphanum(),
+    id: Joi.string().min(24).max(24).alphanum().required(),
   }),
 
   nameDescSchema: Joi.object({

@@ -3,7 +3,7 @@ const tasks = require("../classes/task.js");
 const timeTable = require("../classes/timeTable.js");
 const validatationSchemas = require("../validationSchemas.js");
 
-const timeTableController = {
+const taskController = {
   async getTasks(req, res) {
     //Checking for validation
     try {
@@ -120,6 +120,7 @@ const timeTableController = {
           name: req.body.name,
           description: req.body.description,
         });
+        res.send(changedTask);
       } catch {
         res.sendStatus(500);
       }
@@ -129,4 +130,4 @@ const timeTableController = {
   },
 };
 
-module.exports = timeTableController;
+module.exports = taskController;
