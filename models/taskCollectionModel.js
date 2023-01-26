@@ -2,6 +2,10 @@ const { Schema, model } = require("mongoose");
 
 const tasksCollection = new Schema(
   {
+    date: {
+      type: Date,
+      default: Date.now,
+    },
     name: {
       type: String,
       required: true,
