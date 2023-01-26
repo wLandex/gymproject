@@ -2,8 +2,8 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
-const taskRoutes = require("./routes/task");
-const timeTableRoutes = require("./routes/timetable");
+const taskRoutes = require("./infrastructure/routes/task");
+const timeTableRoutes = require("./infrastructure/routes/timetable");
 
 mongoose.set("strictQuery", false);
 mongoose

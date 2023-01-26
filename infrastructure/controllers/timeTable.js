@@ -1,7 +1,7 @@
 const Joi = require("joi");
-const tasks = require("../classes/task.js");
-const timeTable = require("../classes/timeTable.js");
-const validatationSchemas = require("../validationSchemas.js");
+const tasks = require("../../entities/classes/task.js");
+const timeTable = require("../../entities/classes/timeTable.js");
+const validatationSchemas = require("../../validationSchemas.js");
 
 const timeTableController = {
   async getAll(req, res) {
@@ -27,9 +27,6 @@ const timeTableController = {
   },
   async getByID(req, res) {
     //Checking for validation
-    try {
-      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
-
       try {
         let result = await timeTable.getTimetableByID(req.params.ttID);
         if (!result) {
@@ -40,9 +37,6 @@ const timeTableController = {
       } catch (e) {
         res.sendStatus(500);
       }
-    } catch {
-      res.sendStatus(400);
-    }
   },
 
   async create(req, res) {

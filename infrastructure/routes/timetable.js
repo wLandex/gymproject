@@ -1,6 +1,6 @@
 const validator = require("../middleWares/validator.js");
 const timeTableController = require("../controllers/timeTable.js");
-const validationSchemas = require("../validationSchemas.js");
+const validationSchemas = require("../../validationSchemas.js");
 
 module.exports = function (router) {
   router.get("/timetables", timeTableController.getAll);
@@ -15,13 +15,13 @@ module.exports = function (router) {
 
   router.get(
     "/timetables/:ttID",
-    validator({ params: validationSchemas.idSchema }),
-    timeTableController.getByID
+    validator({ params: {ttID: validationSchemas.idSchema}}),
+    timeTableController.getByID,
   );
 
   router.delete(
     "/timetables/:ttID",
-    validator({ params: validationSchemas.idSchema }),
+    validator({ params: {ttID: validationSchemas.idSchema}}),
     timeTableController.deleteByID
   );
 };
