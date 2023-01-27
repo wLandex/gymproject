@@ -1,89 +1,65 @@
-const Joi = require("joi");
 const tasks = require("../../entities/classes/task.js");
 const timeTable = require("../../entities/classes/timeTable.js");
-const validatationSchemas = require("../../validationSchemas.js");
+const service = require("../../services/timeTable");
 
 const timeTableController = {
+
   async getAll(req, res) {
     try {
-      let result = await timeTable.getTimetables();
+      let result = await service.getAll();
       if (result.length) {
         res.json(result);
         return;
       }
       res.sendStatus(204);
-    } catch {
-      res.sendStatus(500);
+    } catch (e) {
+      res.status(500).json({message: e.message});
     }
   },
+
   async delete(req, res) {
     try {
-      await timeTable.removeTimeTables({});
-      await tasks.removeTasks({});
+      await service.delete();
       res.sendStatus(200);
-    } catch {
-      res.sendStatus(500);
+    } catch (e) {
+      res.status(500).json({message: e.message});
     }
   },
   async getByID(req, res) {
-    //Checking for validation
-      try {
-        let result = await timeTable.getTimetableByID(req.params.ttID);
-        if (!result) {
-          res.sendStatus(404);
-          return;
-        }
-        res.json(result);
-      } catch (e) {
-        res.sendStatus(500);
+    try {
+      let result = await service.getByID(req.params.ttID);
+      if (!result) {
+        res.sendStatus(404);
+        return;
       }
+      res.json(result);
+    } catch (e) {
+      res.status(500).json({message: e.message});
+    }
   },
 
   async create(req, res) {
-    //Checking for validation
     try {
-      let addedTimetable = await timeTable.addTimetable({
-        name: req.body.name,
-      });
+      let addedTimetable = await service.create(req.body.name);
       res.status(201).json(addedTimetable);
     } catch (e) {
-      res.sendStatus(500);
+      res.status(500).json({message: e.message});
     }
   },
 
   async deleteByID(req, res) {
-    //Checking for validation
     try {
-      Joi.attempt({ id: req.params.ttID }, validatationSchemas.idSchema);
+      let result = await service.deleteByID(req.params.ttID)
+      res.json(result);
 
-      try {
-        let result = await timeTable.getTimetableByID(req.params.ttID);
-        if (!result) {
-          console.log(result, "----result");
-          res.sendStatus(404);
-          return;
-        }
-        try {
-          let deletedTimeTablesInfo = await timeTable.removeTimetableByID(
-            req.params.ttID
-          );
-          let deletedTasksInfo = await tasks.removeTasks({
-            timeTableID: req.params.ttID,
-          });
-          res.status(200).json([
-            { about: "DeletedTimeTables", ...deletedTimeTablesInfo },
-            { about: "DeletedTasks", ...deletedTasksInfo },
-          ]);
-        } catch {
-          res.sendStatus(500);
-        }
-      } catch {
-        res.sendStatus(500);
+    } catch (e) {
+      if (e.message === 'No such timetable') {
+        res.status(404).json({message: e.message});
+        return
       }
-    } catch {
-      res.sendStatus(400);
+      res.status(500).json({message: e.message});
     }
-  },
+  }
 };
 
 module.exports = timeTableController;

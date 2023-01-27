@@ -1,7 +1,5 @@
 /node_modules
-.idea/.gitignore
-.idea/GYM project.iml
-.idea/modules.xml
-.idea/vcs.xml
+/.idea
+
 
 

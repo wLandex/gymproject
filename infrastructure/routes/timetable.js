@@ -6,22 +6,22 @@ module.exports = function (router) {
   router.get("/timetables", timeTableController.getAll);
 
   router.post(
-    "/timetables",
-    validator({ body: validationSchemas.nameSchema }),
-    timeTableController.create
+      "/timetables",
+      validator({body: validationSchemas.nameSchema}),
+      timeTableController.create
   );
 
   router.delete("/timetables", timeTableController.delete);
 
   router.get(
-    "/timetables/:ttID",
-    validator({ params: {ttID: validationSchemas.idSchema}}),
-    timeTableController.getByID,
+      "/timetables/:ttID",
+      validator({params: {ttID: validationSchemas.idSchema}}),
+      timeTableController.getByID,
   );
 
   router.delete(
-    "/timetables/:ttID",
-    validator({ params: {ttID: validationSchemas.idSchema}}),
-    timeTableController.deleteByID
+      "/timetables/:ttID",
+      validator({params: {ttID: validationSchemas.idSchema}}),
+      timeTableController.deleteByID
   );
 };
