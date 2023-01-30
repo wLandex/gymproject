@@ -26,7 +26,7 @@ timetable = {
 
   async getTaskByID(id) {
     try {
-      return await taskCollection.findOne({ _id: id });
+      return await taskCollection.findOne({_id: id});
     } catch {
       throw new Error("DB error");
     }
@@ -34,7 +34,7 @@ timetable = {
 
   async removeTaskByID(id) {
     try {
-      return await taskCollection.deleteMany({ _id: id });
+      return await taskCollection.deleteMany({_id: id});
     } catch {
       throw new Error("DB error");
     }
@@ -48,7 +48,7 @@ timetable = {
   },
   async changeTask(id, changes) {
     try {
-      await taskCollection.updateOne({ _id: id }, { $set: changes });
+      await taskCollection.updateOne({_id: id}, {$set: changes});
       return await this.getTaskByID(id);
     } catch {
       throw new Error("DB error");
