@@ -1,6 +1,7 @@
 const tasks = require("../../entities/classes/task.js");
 const timeTable = require("../../entities/classes/timeTable.js");
-const service = require("../../services/task.js");
+const ServiceTask = require("../../services/task.js");
+const service = new ServiceTask(timeTable, tasks)
 
 
 const taskController = {
@@ -31,7 +32,7 @@ const taskController = {
   async createTask(req, res) {
 
     try {
-      const result = await service.createTask({
+      const result = await service.create({
         ttID: req.params.ttID,
         description: req.body.description,
         name: req.body.name,

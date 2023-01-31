@@ -1,6 +1,8 @@
 const tasks = require("../../entities/classes/task.js");
 const timeTable = require("../../entities/classes/timeTable.js");
-const service = require("../../services/timeTable");
+
+const ServiceTimeTable = require("../../services/timeTable.js");
+const service = new ServiceTimeTable(timeTable, tasks)
 
 const timeTableController = {
 

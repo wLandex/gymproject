@@ -3,7 +3,7 @@ const taskCollection = require("../models/taskCollectionModel");
 timetable = {
   async addTask(data) {
     try {
-      return await taskCollection.insertMany([data]);
+      return (await taskCollection.insertMany([data]))[0];
     } catch {
       throw new Error("DB error");
     }
