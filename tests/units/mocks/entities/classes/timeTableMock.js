@@ -25,8 +25,8 @@ module.exports = class {
         this.DB.splice(i, 1);
         removed = elem;
       }
-      return removed;
     })
+    return removed;
   }
 
   async removeTimeTables(filter) {

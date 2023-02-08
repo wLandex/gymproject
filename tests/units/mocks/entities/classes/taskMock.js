@@ -31,15 +31,26 @@ module.exports = class {
     let removed;
     this.DB.forEach((elem, i) => {
       if (elem._id === id) {
-        this.DB.splice(i, 1);
         removed = elem;
+        this.DB.splice(i, 1);
       }
-      return removed;
     })
+    return removed;
   }
 
-  async removeTasks() {
-    this.DB.length = 0;
+  async removeTasks(ttID) {
+    if (!ttID.timeTableID) {
+      this.DB.length = 0;
+      return this.DB;
+    }
+
+    for (let i = 0; i < this.DB.length;) {
+      if (this.DB[i].timeTableID === ttID.timeTableID) {
+        this.DB.splice(i, 1);
+        continue;
+      }
+      i++
+    }
     return this.DB
   }
 

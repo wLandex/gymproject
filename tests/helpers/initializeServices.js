@@ -1,7 +1,8 @@
 const TaskService = require("../../services/task");
-const TimeTableMock = require("../units/mocks/entities/classes/timeTableMock");
-const TaskMock = require("../units/mocks/entities/classes/taskMock");
 const TimeTableService = require("../../services/timeTable");
+
+const TaskMock = require("../units/mocks/entities/classes/taskMock");
+const TimeTableMock = require("../units/mocks/entities/classes/timeTableMock");
 
 
 module.exports = function initializeServices() {
