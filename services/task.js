@@ -5,9 +5,9 @@ module.exports = class Task {
 
   }
 
-  async getTasks(ttID) {
+  async getTasks(ttID, limit, page) {
     try {
-      return await this.taskClass.getTasks({timeTableID: ttID})
+      return await this.taskClass.getTasks({timeTableID: ttID}, limit, page)
     } catch {
       throw new Error('DB error');
     }

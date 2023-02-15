@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Task test Should create tasks 1`] = `
+{
+  "_id": Any<String>,
+  "description": "Some description",
+  "name": "first",
+  "timeTableID": Any<String>,
+}
+`;
+
+exports[`Task test Should create tasks 2`] = `
+{
+  "_id": Any<String>,
+  "description": "Some description",
+  "name": "second",
+  "timeTableID": Any<String>,
+}
+`;

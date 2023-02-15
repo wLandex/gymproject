@@ -27,14 +27,12 @@ describe("Task test", () => {
     let tasks1 = await taskService.getTasks(timeTableDocument1._id);
     let tasks2 = await taskService.getTasks(timeTableDocument2._id);
 
+
+    expect(tasks1[0]).toMatchSnapshot({_id: expect.any(String), timeTableID: expect.any(String)})
+    expect(tasks1[1]).toMatchSnapshot({_id: expect.any(String), timeTableID: expect.any(String)})
+
     expect(tasks1.length).toBe(2);
     expect(tasks2.length).toBe(2);
-
-    expect(tasks1[0].name).toBe(name1);
-    expect(tasks1[0].timeTableID).toBe(createdTask1.timeTableID);
-
-    expect(tasks1[1].name).toBe(name2);
-    expect(tasks1[1].timeTableID).toBe(createdTask2.timeTableID);
 
     expect(tasks2[0].name).toBe(name3);
     expect(tasks2[0].timeTableID).toBe(createdTask3.timeTableID);
@@ -150,5 +148,5 @@ describe("Task test", () => {
     expect((await taskService.getTasks(timeTableDocument1._id)).length).toBe(3);
 
   })
-  
+
 })

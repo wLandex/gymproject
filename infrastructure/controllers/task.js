@@ -8,7 +8,7 @@ const taskController = {
   async getTasks(req, res) {
 
     try {
-      let result = await service.getTasks(req.params.ttID);
+      let result = await service.getTasks(req.params.ttID, Number(req.query.limit), Number(req.query.page));
       if (!result.length) {
         res.sendStatus(204);
         return;
