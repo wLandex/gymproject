@@ -1,8 +1,10 @@
 const {createHmac} = require('crypto');
+const randToken = require('rand-token');
 
 module.exports = class User {
-  constructor(userClass) {
+  constructor(userClass, sessionClass) {
     this.userClass = userClass;
+    this.sessionClass = sessionClass;
   }
 
   async create(email, password) {
@@ -13,20 +15,37 @@ module.exports = class User {
     const hash = createHmac('sha256', process.env.SECRET)
         .update(password)
         .digest('hex');
-    
+
     //Сохраняем нового пользователя в базу данных
-    await this.userClass.add(email, hash);
+    await this.userClass.create(email, hash);
   }
 
   async login(email, password) {
+
+
     let foundUser = await this.userClass.getUserByEmail(email)
-    console.log(foundUser);
+    // console.log(foundUser);
     if (!foundUser) throw new Error('No user with such email');
     const hash = createHmac('sha256', process.env.SECRET)
         .update(password)
         .digest('hex');
 
     if (foundUser.hashPassword !== hash) throw new Error('Wrong password');
+
+    let expireAtAccessToken = Date.now() + 120e3;
+    let expireAtRefreshToken = Date.now() + 7200e3;
+    let accessToken = randToken.generate(32);
+    let refreshToken = randToken.generate(32);
+
+
+    let createdSession = await this.sessionClass.create(foundUser._id, accessToken, refreshToken, expireAtAccessToken, expireAtRefreshToken);
+
+    let result = createdSession[0];
+    return {
+      refreshToken: result.refreshToken,
+      accessToken: result.accessToken,
+      expireAtAccessToken: result.expireAtAccessToken,
+    }
 
   }
 

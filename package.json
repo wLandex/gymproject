@@ -23,7 +23,8 @@
     "joi": "^17.7.0",
     "mongo-mock": "^4.2.0",
     "mongomock": "^0.1.2",
-    "mongoose": "^6.8.4"
+    "mongoose": "^6.8.4",
+    "rand-token": "^1.0.1"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

@@ -1,7 +1,7 @@
 const userModel = require("../models/userCollection.js");
 
 module.exports = {
-  async add(email, hash) {
+  async create(email, hash) {
     try {
       return await userModel.insertMany([{email, hashPassword: hash}]);
     } catch {
@@ -15,7 +15,7 @@ module.exports = {
     } catch {
       throw new Error("DB error");
     }
-
-
   }
+
+
 }

@@ -1,6 +1,8 @@
 const userClass = require("../../entities/classes/user.js");
+const sessionClass = require("../../entities/classes/session.js");
+
 const ServiceUser = require("../../services/user.js");
-const service = new ServiceUser(userClass);
+const service = new ServiceUser(userClass, sessionClass);
 
 const userController = {
 
@@ -15,8 +17,8 @@ const userController = {
 
   async login(req, res) {
     try {
-      await service.login(req.body.email, req.body.password);
-      res.status(200).json({message: "Logged IN"})
+      let result = await service.login(req.body.email, req.body.password);
+      res.status(200).json(result);
 
     } catch (e) {
       if (e.message === "No user with such email") {
