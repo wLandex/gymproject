@@ -1,52 +1,57 @@
-const timeTable = require("../entities/classes/timeTable");
-const tasks = require("../entities/classes/task");
+module.exports = class TimeTable {
+  constructor(timeTableClass, taskClass) {
+    this.timeTableClass = timeTableClass;
+    this.taskClass = taskClass;
 
-module.exports = {
+  }
 
   async getAll() {
     try {
-      return await timeTable.getTimetables();
+      return await this.timeTableClass.getTimetables();
 
     } catch {
       throw new Error('DB error');
     }
-  },
+  }
 
   async delete() {
     try {
-      await timeTable.removeTimeTables({});
-      await tasks.removeTasks({});
+      await this.timeTableClass.removeTimeTables({});
+      await this.taskClass.removeTasks({});
     } catch {
       throw new Error('DB error')
     }
 
-  },
+  }
+
   async getByID(ttID) {
     try {
-      return await timeTable.getTimetableByID(ttID);
+      return await this.timeTableClass.getTimetableByID(ttID);
     } catch {
       throw new Error('DB error');
     }
-  },
+  }
+
   async create(name) {
     try {
-      return await timeTable.addTimetable({
+      return await this.timeTableClass.addTimetable({
         name
       });
     } catch {
       throw new Error('DB error');
     }
-  },
+  }
+
   async deleteByID(ttID) {
-    if (!await timeTable.getTimetableByID(ttID))
+    if (!await this.timeTableClass.getTimetableByID(ttID))
       throw new Error('No such timetable');
 
     try {
 
-      let deletedTimeTablesInfo = await timeTable.removeTimetableByID(
+      let deletedTimeTablesInfo = await this.timeTableClass.removeTimetableByID(
           ttID
       );
-      let deletedTasksInfo = await tasks.removeTasks({
+      let deletedTasksInfo = await this.taskClass.removeTasks({
         timeTableID: ttID,
       });
 
@@ -58,6 +63,6 @@ module.exports = {
       throw new Error('DB error');
     }
 
-  },
-  
+  }
+
 }

@@ -21,6 +21,17 @@ module.exports = function (schema) {
             .json({reason: "Invalid params", message: e.message});
       }
     }
+    //TODO
+    if (schema.query) {
+      try {
+        Joi.attempt(req.query, Joi.object(schema.query));
+      } catch (e) {
+        return res
+            .status(400)
+            .json({reason: "Invalid query", message: e.message});
+      }
+    }
+
 
     next();
   };

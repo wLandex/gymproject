@@ -3,14 +3,14 @@ const taskCollection = require("../models/taskCollectionModel");
 timetable = {
   async addTask(data) {
     try {
-      return await taskCollection.insertMany([data]);
+      return (await taskCollection.insertMany([data]))[0];
     } catch {
       throw new Error("DB error");
     }
   },
-  async getTasks(filter) {
+  async getTasks(filter, limit, page) {
     try {
-      return await taskCollection.find(filter);
+      return await taskCollection.find(filter).skip(limit * (page - 1)).limit(limit);
     } catch {
       throw new Error("DB error");
     }

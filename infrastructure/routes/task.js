@@ -20,7 +20,11 @@ module.exports = function (router) {
 
   router.get(
       "/timetables/:ttID/tasks",
-      validator({params: {ttID: validationSchemas.idSchema}}),
+      validator({
+        params: {ttID: validationSchemas.idSchema},
+        query: validationSchemas.limitPageSchema
+
+      }),
       taskController.getTasks
   );
 
@@ -30,9 +34,10 @@ module.exports = function (router) {
         params: {
           ttID: validationSchemas.idSchema,
           taskID: validationSchemas.idSchema,
+
         },
       }),
-      
+
       taskController.getTaskByID
   );
 

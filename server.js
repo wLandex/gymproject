@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 
 const taskRoutes = require("./infrastructure/routes/task");
 const timeTableRoutes = require("./infrastructure/routes/timetable");
+const userRoutes = require("./infrastructure/routes/user.js");
+
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -23,3 +25,4 @@ app.listen(8000);
 app.use(bodyParser.json());
 timeTableRoutes(app);
 taskRoutes(app);
+userRoutes(app);

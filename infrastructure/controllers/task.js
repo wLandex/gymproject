@@ -1,13 +1,14 @@
 const tasks = require("../../entities/classes/task.js");
 const timeTable = require("../../entities/classes/timeTable.js");
-const service = require("../../services/task.js");
+const ServiceTask = require("../../services/task.js");
+const service = new ServiceTask(timeTable, tasks)
 
 
 const taskController = {
   async getTasks(req, res) {
 
     try {
-      let result = await service.getTasks(req.params.ttID);
+      let result = await service.getTasks(req.params.ttID, Number(req.query.limit), Number(req.query.page));
       if (!result.length) {
         res.sendStatus(204);
         return;
@@ -31,7 +32,7 @@ const taskController = {
   async createTask(req, res) {
 
     try {
-      const result = await service.createTask({
+      const result = await service.create({
         ttID: req.params.ttID,
         description: req.body.description,
         name: req.body.name,
