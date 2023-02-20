@@ -2,11 +2,11 @@
   "name": "gym",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "jest",
-    "start": "node index.js",
-    "dev": "nodemon server.js"
+    "start": "node src/index.js",
+    "dev": "nodemon src/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,12 +19,14 @@
   },
   "homepage": "https://github.com/wLandex/gymproject#readme",
   "dependencies": {
+    "@types/joi": "^17.2.3",
     "express": "^4.18.2",
-    "joi": "^17.7.0",
+    "joi": "^17.7.1",
     "mongo-mock": "^4.2.0",
     "mongomock": "^0.1.2",
     "mongoose": "^6.8.4",
-    "rand-token": "^1.0.1"
+    "rand-token": "^1.0.1",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/jest": "^29.4.0",

@@ -1,6 +1,6 @@
 const taskCollection = require("../models/taskCollectionModel");
 
-timetable = {
+const timetable = {
   async addTask(data) {
     try {
       return (await taskCollection.insertMany([data]))[0];
