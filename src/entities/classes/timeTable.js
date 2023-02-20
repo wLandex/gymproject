@@ -1,6 +1,6 @@
 const timeTableModel = require("../models/timeTableCollectionModel.js");
 
-module.exports = {
+const TimeTable = {
   async addTimetable(data) {
     try {
       return await timeTableModel.insertMany([data]);
@@ -38,3 +38,4 @@ module.exports = {
     }
   },
 };
+module.export = TimeTable;

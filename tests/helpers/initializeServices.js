@@ -1,5 +1,5 @@
-const TaskService = require("../../services/task");
-const TimeTableService = require("../../services/timeTable");
+const TaskService = require("../../src/services/task");
+const TimeTableService = require("../../src/services/timeTable");
 
 const TaskMock = require("../units/mocks/entities/classes/taskMock");
 const TimeTableMock = require("../units/mocks/entities/classes/timeTableMock");

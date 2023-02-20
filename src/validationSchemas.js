@@ -1,4 +1,4 @@
-const Joi = require("joi");
+import Joi from "joi";
 
 const validationSchemas = {
   idSchema: Joi.string().min(24).max(24).alphanum().required(),
@@ -21,7 +21,7 @@ const validationSchemas = {
   emailPasswordSchema: {
     email: Joi.string().email().required(),
     password: Joi.string().min(8).max(26).required(),
-  
+
   }
 };
 
