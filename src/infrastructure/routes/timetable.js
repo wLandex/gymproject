@@ -1,4 +1,6 @@
-const validator = require("../middleWares/validator.js");
+import validator from "../middleWares/validator";
+
+
 const timeTableController = require("../controllers/timeTable.js");
 const validationSchemas = require("../../validationSchemas.js");
 

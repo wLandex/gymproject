@@ -10,11 +10,13 @@ const sessionCollection = new Schema(
       accessToken: {
         type: String,
         required: true,
+        unique: true,
       },
 
       refreshToken: {
         type: String,
         required: true,
+        unique: true,
       },
 
       expireAtAccessToken: {
@@ -25,6 +27,7 @@ const sessionCollection = new Schema(
       expireAtRefreshToken: {
         type: Date,
         required: true,
+
       }
 
     },

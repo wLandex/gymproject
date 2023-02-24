@@ -24,7 +24,6 @@ module.exports = class User {
 
 
     let foundUser = await this.userClass.getUserByEmail(email)
-    // console.log(foundUser);
     if (!foundUser) throw new Error('No user with such email');
     const hash = createHmac('sha256', process.env.SECRET)
         .update(password)

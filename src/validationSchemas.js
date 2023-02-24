@@ -21,8 +21,13 @@ const validationSchemas = {
   emailPasswordSchema: {
     email: Joi.string().email().required(),
     password: Joi.string().min(8).max(26).required(),
+  },
 
+  tokenSchema: {
+    refreshToken: Joi.string().min(32).max(32)
   }
+
+
 };
 
 module.exports = validationSchemas;

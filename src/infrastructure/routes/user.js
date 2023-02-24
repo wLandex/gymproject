@@ -1,6 +1,7 @@
-const validator = require("../middleWares/validator.js");
 const userController = require("../controllers/user.js");
 const validationSchemas = require("../../validationSchemas.js");
+import validator from "../middleWares/validator";
+
 
 module.exports = function (router) {
 
