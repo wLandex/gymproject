@@ -8,7 +8,12 @@ module.exports = function (router) {
   router.post(
       "/user",
       validator({
-        body: validationSchemas.emailPasswordSchema
+
+
+        body: {
+          email: validationSchemas.emailSchema,
+          password: validationSchemas.passwordSchema
+        }
       }),
       userController.create
   );
@@ -16,7 +21,13 @@ module.exports = function (router) {
   router.get(
       "/user",
       validator({
-        body: validationSchemas.emailPasswordSchema
+
+        body: {
+          email: validationSchemas.emailSchema,
+          password: validationSchemas.passwordSchema,
+        }
+
+
       }),
       userController.login
   );

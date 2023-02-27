@@ -7,7 +7,6 @@ import taskRoutes from "./infrastructure/routes/task"
 
 const timeTableRoutes = require("./infrastructure/routes/timetable");
 const userRoutes = require("./infrastructure/routes/user.js");
-console.log(Date.now());
 
 mongoose.set("strictQuery", false);
 mongoose

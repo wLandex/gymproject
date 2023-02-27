@@ -3,20 +3,21 @@ import validator from "../middleWares/validator";
 
 const taskController = require("../controllers/task.js");
 const validationSchemas = require("../../validationSchemas");
+const authentication = require('../middleWares/authentication.js');
 
 export default function (router: Express) {
-    router.delete(
-        "/timetables/:ttID/tasks",
-        validator({params: {ttID: validationSchemas.idSchema}}),
-        taskController.deleteTasks
-    );
-
     router.post(
         "/timetables/:ttID/tasks",
         validator({
-            body: validationSchemas.nameDescSchema,
+            body: {
+                name: validationSchemas.nameSchema,
+                description: validationSchemas.descriptionSchema,
+                accessToken: validationSchemas.tokenSchema
+            },
             params: {ttID: validationSchemas.idSchema},
         }),
+        authentication(),
+
         taskController.createTask
     );
 
@@ -24,9 +25,10 @@ export default function (router: Express) {
         "/timetables/:ttID/tasks",
         validator({
             params: {ttID: validationSchemas.idSchema},
-            query: validationSchemas.limitPageSchema
-
+            query: {limit: validationSchemas.limitSchema, page: validationSchemas.limitSchema},
+            body: {accessToken: validationSchemas.tokenSchema}
         }),
+        authentication(),
         taskController.getTasks
     );
 
@@ -38,7 +40,8 @@ export default function (router: Express) {
                 taskID: validationSchemas.idSchema,
 
             },
-        }),
+            body: {accessToken: validationSchemas.tokenSchema}
+        }), authentication(),
 
         taskController.getTaskByID
     );
@@ -50,10 +53,12 @@ export default function (router: Express) {
                 ttID: validationSchemas.idSchema,
                 taskID: validationSchemas.idSchema,
             },
+            body: {accessToken: validationSchemas.tokenSchema}
         }),
+        authentication(),
         taskController.deleteTaskByID
     );
-    //FIX
+
     router.put(
         "/timetables/:ttID/tasks/:taskID",
         validator({
@@ -61,8 +66,13 @@ export default function (router: Express) {
                 ttID: validationSchemas.idSchema,
                 taskID: validationSchemas.idSchema,
             },
-            body: validationSchemas.nameDescSchema,
+            body: {
+                accessToken: validationSchemas.tokenSchema,
+                name: validationSchemas.nameSchema,
+                description: validationSchemas.descriptionSchema
+            }
         }),
+        authentication(),
         taskController.changeTaskByID
     );
 };

@@ -9,7 +9,6 @@ module.exports = class User {
   async refresh(refToken) {
     let foundSession = await this.sessionClass.findByRefreshToken(refToken)
 
-    // console.log(foundSession)
     if (!foundSession) {
       throw new Error('No such session');
     }
@@ -32,7 +31,6 @@ module.exports = class User {
       expireAtRefreshToken
     });
 
-    console.log(result);
 
     if (!result.acknowledged) {
       throw new Error('DB error');

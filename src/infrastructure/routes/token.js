@@ -8,7 +8,7 @@ module.exports = function (router) {
   router.post(
       "/tokens/refresh",
       validator({
-        body: validationSchemas.tokenSchema
+        body: {refreshToken: validationSchemas.tokenSchema}
       }),
       tokenController.refresh
   );

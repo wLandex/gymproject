@@ -37,7 +37,7 @@ module.exports = class User {
     let refreshToken = randToken.generate(32);
 
 
-    let createdSession = await this.sessionClass.create(foundUser._id, accessToken, refreshToken, expireAtAccessToken, expireAtRefreshToken);
+    let createdSession = await this.sessionClass.create(foundUser._id, foundUser.email, accessToken, refreshToken, expireAtAccessToken, expireAtRefreshToken);
 
     let result = createdSession[0];
     return {

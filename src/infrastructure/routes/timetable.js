@@ -1,29 +1,45 @@
 import validator from "../middleWares/validator";
 
-
+const authentication = require('../middleWares/authentication.js');
 const timeTableController = require("../controllers/timeTable.js");
 const validationSchemas = require("../../validationSchemas.js");
 
 module.exports = function (router) {
-  router.get("/timetables", timeTableController.getAll);
+
+  router.get("/timetables", validator({
+    body: {
+      accessToken: validationSchemas.tokenSchema
+    }
+  }), authentication(), timeTableController.getAll);
 
   router.post(
       "/timetables",
-      validator({body: validationSchemas.nameSchema}),
+      validator({
+            body: {
+              accessToken: validationSchemas.tokenSchema,
+              name: validationSchemas.nameSchema
+            }
+          }
+      ),
+      authentication(),
       timeTableController.create
   );
 
-  router.delete("/timetables", timeTableController.delete);
-
   router.get(
       "/timetables/:ttID",
-      validator({params: {ttID: validationSchemas.idSchema}}),
+      validator({
+        params: {ttID: validationSchemas.idSchema},
+        body: {accessToken: validationSchemas.tokenSchema}
+      }),
       timeTableController.getByID,
   );
 
   router.delete(
       "/timetables/:ttID",
-      validator({params: {ttID: validationSchemas.idSchema}}),
+      validator({
+        params: {ttID: validationSchemas.idSchema},
+        body: {accessToken: validationSchemas.tokenSchema}
+      }), authentication(),
       timeTableController.deleteByID
   );
 };

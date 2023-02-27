@@ -5,51 +5,23 @@ module.exports = class TimeTable {
 
   }
 
-  async getAll() {
+  async getAll(userEmail) {
     try {
-      return await this.timeTableClass.getTimetables();
+      return await this.timeTableClass.getTimetables({creatorEmail: userEmail});
 
     } catch {
-      throw new Error('DB error');
+      throw new Error('DB error ');
     }
   }
 
-  async delete() {
-    try {
-      await this.timeTableClass.removeTimeTables({});
-      await this.taskClass.removeTasks({});
-    } catch {
-      throw new Error('DB error')
-    }
-
-  }
-
-  async getByID(ttID) {
-    try {
-      return await this.timeTableClass.getTimetableByID(ttID);
-    } catch {
-      throw new Error('DB error');
-    }
-  }
-
-  async create(name) {
-    try {
-      return await this.timeTableClass.addTimetable({
-        name
-      });
-    } catch {
-      throw new Error('DB error');
-    }
-  }
-
-  async deleteByID(ttID) {
+  async deleteByID(ttID, userEmail) {
     if (!await this.timeTableClass.getTimetableByID(ttID))
       throw new Error('No such timetable');
 
     try {
 
       let deletedTimeTablesInfo = await this.timeTableClass.removeTimetableByID(
-          ttID
+          {_id: ttID, creatorEmail: userEmail}
       );
       let deletedTasksInfo = await this.taskClass.removeTasks({
         timeTableID: ttID,
@@ -64,5 +36,25 @@ module.exports = class TimeTable {
     }
 
   }
+
+  async getByID(ttID, userEmail) {
+    try {
+      return await this.timeTableClass.getTimetableByID({_id: ttID, creatorEmail: userEmail});
+    } catch {
+      throw new Error('DB error');
+    }
+  }
+
+  async create(name, userEmail) {
+    try {
+      return await this.timeTableClass.addTimetable({
+        name,
+        creatorEmail: userEmail
+      });
+    } catch {
+      throw new Error('DB error');
+    }
+  }
+
 
 }

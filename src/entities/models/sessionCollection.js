@@ -28,7 +28,11 @@ const sessionCollection = new Schema(
         type: Date,
         required: true,
 
-      }
+      },
+      userEmail: {
+        type: String,
+        required: true,
+      },
 
     },
     {versionKey: false}

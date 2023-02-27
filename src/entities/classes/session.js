@@ -2,10 +2,11 @@ const sessionModel = require("../models/sessionCollection.js");
 const taskCollection = require("../models/taskCollectionModel");
 
 module.exports = {
-  async create(userID, accessToken, refreshToken, expireAtAccessToken, expireAtRefreshToken) {
+  async create(userID, userEmail, accessToken, refreshToken, expireAtAccessToken, expireAtRefreshToken) {
     try {
       return await sessionModel.insertMany([{
         userID,
+        userEmail,
         accessToken,
         refreshToken,
         expireAtRefreshToken,
@@ -29,6 +30,17 @@ module.exports = {
     try {
 
       return await sessionModel.findOne({refreshToken});
+    } catch {
+      throw new Error('DB error')
+
+    }
+
+  },
+
+  async findByAccessToken(accessToken) {
+    try {
+
+      return await sessionModel.findOne({accessToken});
     } catch {
       throw new Error('DB error')
 
