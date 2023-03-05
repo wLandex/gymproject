@@ -1,8 +1,8 @@
-import validator from "../middleWares/validator";
+import validator from "../../middleWares/validator";
 
-const authentication = require('../middleWares/authentication.js');
-const timeTableController = require("../controllers/timeTable.js");
-const validationSchemas = require("../../validationSchemas.js");
+const authentication = require('../../middleWares/authentication.js');
+const timeTableController = require("../../controllers/api/timeTable.js");
+const validationSchemas = require("../../../validationSchemas.js");
 
 module.exports = function (router) {
 

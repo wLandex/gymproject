@@ -1,6 +1,6 @@
-const sessionClass = require("../../entities/classes/session.js");
+const sessionClass = require("../../../entities/classes/session.js");
 
-const ServiceUser = require("../../services/token");
+const ServiceUser = require("../../../services/token");
 const service = new ServiceUser(sessionClass);
 
 const tokenController = {

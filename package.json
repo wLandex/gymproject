@@ -20,11 +20,13 @@
   "homepage": "https://github.com/wLandex/gymproject#readme",
   "dependencies": {
     "@types/joi": "^17.2.3",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "joi": "^17.7.1",
     "mongo-mock": "^4.2.0",
     "mongomock": "^0.1.2",
     "mongoose": "^6.8.4",
+    "pug": "^3.0.2",
     "rand-token": "^1.0.1",
     "ts-node": "^10.9.1"
   },

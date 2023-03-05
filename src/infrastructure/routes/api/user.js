@@ -1,6 +1,6 @@
-const userController = require("../controllers/user.js");
-const validationSchemas = require("../../validationSchemas.js");
-import validator from "../middleWares/validator";
+const userController = require("../../controllers/api/user.js");
+const validationSchemas = require("../../../validationSchemas.js");
+import validator from "../../middleWares/validator";
 
 
 module.exports = function (router) {
@@ -31,6 +31,5 @@ module.exports = function (router) {
       }),
       userController.login
   );
-
 
 };

@@ -1,7 +1,7 @@
-import validator from "../middleWares/validator";
+import validator from "../../middleWares/validator";
 
-const tokenController = require("../controllers/token.js");
-const validationSchemas = require("../../validationSchemas.js");
+const tokenController = require("../../controllers/api/token.js");
+const validationSchemas = require("../../../validationSchemas.js");
 
 module.exports = function (router) {
 

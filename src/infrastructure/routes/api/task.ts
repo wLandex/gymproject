@@ -1,11 +1,11 @@
-import {Express} from "express";
-import validator from "../middleWares/validator";
+import {Express, Router} from "express";
+import validator from "../../middleWares/validator";
 
-const taskController = require("../controllers/task.js");
-const validationSchemas = require("../../validationSchemas");
-const authentication = require('../middleWares/authentication.js');
+const taskController = require("../../controllers/api/task.js");
+const validationSchemas = require("../../../validationSchemas");
+const authentication = require('../../middleWares/authentication.js');
 
-export default function (router: Express) {
+export default function (router: Router) {
     router.post(
         "/timetables/:ttID/tasks",
         validator({
