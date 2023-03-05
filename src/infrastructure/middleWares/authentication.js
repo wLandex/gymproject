@@ -8,7 +8,7 @@ module.exports = function () {
 
       console.log(result);
       if (!result) {
-        return res.status(404).json({message: "No such token"});
+        return res.status(401).json({message: "No such token"});
       }
 
       if (!(result.expireAtAccessToken > Date.now())) {
