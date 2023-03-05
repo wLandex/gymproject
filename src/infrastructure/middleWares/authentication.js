@@ -6,14 +6,12 @@ module.exports = function () {
       let accessToken = req.body.accessToken;
       let result = await SessionCollection.findByAccessToken(accessToken);
 
-      console.log(result);
       if (!result) {
         return res.status(401).json({message: "No such token"});
       }
 
-      if (!(result.expireAtAccessToken > Date.now())) {
+      if (result.expireAtAccessToken.getTime() < Date.now()) {
         return res.status(401).json({message: "Access token expired"});
-
       }
 
       req.data = {
