@@ -22,11 +22,7 @@ const taskController = {
   async createTask(req, res) {
 
     try {
-      const result = await service.create({
-        ttID: req.params.ttID,
-        description: req.body.description,
-        name: req.body.name,
-      }, req.data.userEmail)
+      const result = await service.create(req.params.ttID, req.body.description, req.body.name, req.data.userEmail)
       res.status(200).json(result);
     } catch (e) {
       if (e.message === 'Cannot find timetable') {

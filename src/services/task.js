@@ -18,10 +18,9 @@ module.exports = class Task {
 
   }
 
-  async create(data, userEmail) {
-    const {ttID, description, name} = data;
+  async create(ttID, description, name, creatorEmail) {
     try {
-      if (await this.timeTableClass.getTimetableByID({_id: ttID, creatorEmail: userEmail})) {
+      if (await this.timeTableClass.getTimetableByID({_id: ttID, creatorEmail})) {
         return await this.taskClass.addTask({
           name,
           description,
