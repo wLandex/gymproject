@@ -1,5 +1,6 @@
 const sessionModel = require("../models/sessionCollection.js");
-const taskCollection = require("../models/taskCollectionModel");
+const randToken = require('rand-token');
+
 
 module.exports = {
   async create(userID, userEmail, accessToken, refreshToken, expireAtAccessToken, expireAtRefreshToken) {
@@ -46,6 +47,9 @@ module.exports = {
 
     }
 
+  },
+  generateToken() {
+    return randToken.generate(32);
   }
 
 

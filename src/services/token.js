@@ -1,4 +1,4 @@
-const randToken = require('rand-token');
+const sessionClass = require('../entities/classes/session.js')
 
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
@@ -23,8 +23,8 @@ module.exports = class User {
 
     let expireAtAccessToken = Date.now() + MINUTE * 2;
     let expireAtRefreshToken = Date.now() + HOUR * 2;
-    let accessToken = randToken.generate(32);
-    let refreshToken = randToken.generate(32);
+    let accessToken = sessionClass.generateToken();
+    let refreshToken = sessionClass.generateToken();
 
 
     let result = await this.sessionClass.refresh(refToken, {
