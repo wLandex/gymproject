@@ -1,7 +1,7 @@
-const userClass = require("../../entities/classes/user.js");
-const sessionClass = require("../../entities/classes/session.js");
+const userClass = require("../../../entities/classes/user.js");
+const sessionClass = require("../../../entities/classes/session.js");
 
-const ServiceUser = require("../../services/user.js");
+const ServiceUser = require("../../../services/user.js");
 const service = new ServiceUser(userClass, sessionClass);
 
 const userController = {

@@ -1,6 +1,6 @@
 const taskCollection = require("../models/taskCollectionModel");
 
-const timetable = {
+module.exports = {
   async addTask(data) {
     try {
       return (await taskCollection.insertMany([data]))[0];
@@ -16,7 +16,7 @@ const timetable = {
     }
   },
 
-  async getTask(filter) {
+  async getTaskByFilter(filter) {
     try {
       return await taskCollection.findOne(filter);
     } catch {
@@ -24,36 +24,21 @@ const timetable = {
     }
   },
 
-  async getTaskByID(id) {
-    try {
-      return await taskCollection.findOne({_id: id});
-    } catch {
-      throw new Error("DB error");
-    }
-  },
-
-  async removeTaskByID(id) {
-    try {
-      return await taskCollection.deleteMany({_id: id});
-    } catch {
-      throw new Error("DB error");
-    }
-  },
-  async removeTasks(filter) {
+  async removeTaskByFilter(filter) {
     try {
       return await taskCollection.deleteMany(filter);
     } catch {
       throw new Error("DB error");
     }
   },
-  async changeTask(id, changes) {
+  async changeTaskByFilter(filter, changes) {
     try {
-      await taskCollection.updateOne({_id: id}, {$set: changes});
-      return await this.getTaskByID(id);
+      await taskCollection.updateOne(filter, {$set: changes});
+      return await this.getTaskByFilter(filter);
     } catch {
       throw new Error("DB error");
     }
   },
 };
 
-module.exports = timetable;
+

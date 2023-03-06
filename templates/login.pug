@@ -1,0 +1,13 @@
+doctype html
+html(lang='en')
+    head
+        title #{pageName}
+    body
+        h1 Авторизация
+        form(action="/login",method="post")
+            div
+                input(type='text', placeholder='email',  id='fname', name='fname')
+            div
+                input(type='password', placeholder='password' , id='pwd', name='pwd')
+            div
+                input(type="submit", name="submit")

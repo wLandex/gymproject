@@ -7,10 +7,10 @@ const timeTablesCollection = new Schema(
         required: true,
       },
 
-      // creatorEmail: {
-      //   type: String,
-      //   required: true,
-      // },
+      creatorEmail: {
+        type: String,
+        required: true,
+      },
       // usersForSharing: [{email: {type: String, required: true}, access: {type: Number, required: true}}]
     },
     {versionKey: false}
