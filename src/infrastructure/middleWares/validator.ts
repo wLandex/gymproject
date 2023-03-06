@@ -7,6 +7,7 @@ interface ValidationI {
     body?: Schema;
     params?: Schema;
     query?: Schema;
+    authenticationToken?: Schema;
 
 }
 
@@ -38,6 +39,16 @@ export default function (schema: ValidationI) {
                 return res
                     .status(400)
                     .json({reason: "Invalid query", message: e.message});
+            }
+        }
+
+        if (schema.authenticationToken) {
+            try {
+                Joi.attempt({accessToken: req.headers.accesstoken}, Joi.object(schema.authenticationToken));
+            } catch (e: any) {
+                return res
+                    .status(400)
+                    .json({reason: "Invalid headers", message: e.message});
             }
         }
 

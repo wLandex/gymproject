@@ -7,7 +7,7 @@ const validationSchemas = require("../../../validationSchemas.js");
 module.exports = function (router) {
 
   router.get("/timetables", validator({
-    body: {
+    authenticationToken: {
       accessToken: validationSchemas.tokenSchema
     }
   }), authentication(), timeTableController.getAll);
@@ -16,8 +16,10 @@ module.exports = function (router) {
       "/timetables",
       validator({
             body: {
-              accessToken: validationSchemas.tokenSchema,
               name: validationSchemas.nameSchema
+            },
+            authenticationToken: {
+              accessToken: validationSchemas.tokenSchema
             }
           }
       ),
@@ -29,7 +31,9 @@ module.exports = function (router) {
       "/timetables/:ttID",
       validator({
         params: {ttID: validationSchemas.idSchema},
-        body: {accessToken: validationSchemas.tokenSchema}
+        authenticationToken: {
+          accessToken: validationSchemas.tokenSchema
+        }
       }),
       timeTableController.getByID,
   );
@@ -38,7 +42,9 @@ module.exports = function (router) {
       "/timetables/:ttID",
       validator({
         params: {ttID: validationSchemas.idSchema},
-        body: {accessToken: validationSchemas.tokenSchema}
+        authenticationToken: {
+          accessToken: validationSchemas.tokenSchema
+        }
       }), authentication(),
       timeTableController.deleteByID
   );

@@ -1,4 +1,4 @@
-import {Express, Router} from "express";
+import {Router} from "express";
 import validator from "../../middleWares/validator";
 
 const taskController = require("../../controllers/api/task.js");
@@ -12,9 +12,11 @@ export default function (router: Router) {
             body: {
                 name: validationSchemas.nameSchema,
                 description: validationSchemas.descriptionSchema,
-                accessToken: validationSchemas.tokenSchema
             },
             params: {ttID: validationSchemas.idSchema},
+            authenticationToken: {
+                accessToken: validationSchemas.tokenSchema
+            }
         }),
         authentication(),
 
@@ -26,7 +28,9 @@ export default function (router: Router) {
         validator({
             params: {ttID: validationSchemas.idSchema},
             query: {limit: validationSchemas.limitSchema, page: validationSchemas.limitSchema},
-            body: {accessToken: validationSchemas.tokenSchema}
+            authenticationToken: {
+                accessToken: validationSchemas.tokenSchema
+            }
         }),
         authentication(),
         taskController.getTasks
@@ -40,7 +44,9 @@ export default function (router: Router) {
                 taskID: validationSchemas.idSchema,
 
             },
-            body: {accessToken: validationSchemas.tokenSchema}
+            authenticationToken: {
+                accessToken: validationSchemas.tokenSchema
+            }
         }), authentication(),
 
         taskController.getTaskByID
@@ -53,7 +59,9 @@ export default function (router: Router) {
                 ttID: validationSchemas.idSchema,
                 taskID: validationSchemas.idSchema,
             },
-            body: {accessToken: validationSchemas.tokenSchema}
+            authenticationToken: {
+                accessToken: validationSchemas.tokenSchema
+            }
         }),
         authentication(),
         taskController.deleteTaskByID
@@ -67,9 +75,11 @@ export default function (router: Router) {
                 taskID: validationSchemas.idSchema,
             },
             body: {
-                accessToken: validationSchemas.tokenSchema,
                 name: validationSchemas.nameSchema,
                 description: validationSchemas.descriptionSchema
+            },
+            authenticationToken: {
+                accessToken: validationSchemas.tokenSchema
             }
         }),
         authentication(),

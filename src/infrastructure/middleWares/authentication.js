@@ -3,7 +3,8 @@ const SessionCollection = require('../../entities/classes/session.js');
 module.exports = function () {
   return async function (req, res, next) {
     try {
-      let accessToken = req.body.accessToken;
+      let accessToken = req.headers.accesstoken;
+      console.log(accessToken)
       let result = await SessionCollection.findByAccessToken(accessToken);
 
       if (!result) {
