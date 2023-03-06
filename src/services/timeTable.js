@@ -5,23 +5,23 @@ module.exports = class TimeTable {
 
   }
 
-  async getAll(userEmail) {
+  async getAll(creatorEmail) {
     try {
-      return await this.timeTableClass.getTimetables({creatorEmail: userEmail});
+      return await this.timeTableClass.getTimetables({creatorEmail});
 
     } catch {
       throw new Error('DB error ');
     }
   }
 
-  async deleteByID(ttID, userEmail) {
+  async deleteByID(ttID, creatorEmail) {
     if (!await this.timeTableClass.getTimetableByID(ttID))
       throw new Error('No such timetable');
 
     try {
 
       let deletedTimeTablesInfo = await this.timeTableClass.removeTimetableByID(
-          {_id: ttID, creatorEmail: userEmail}
+          {_id: ttID, creatorEmail}
       );
       let deletedTasksInfo = await this.taskClass.removeTasks({
         timeTableID: ttID,
@@ -37,19 +37,19 @@ module.exports = class TimeTable {
 
   }
 
-  async getByID(ttID, userEmail) {
+  async getByID(ttID, creatorEmail) {
     try {
-      return await this.timeTableClass.getTimetableByID({_id: ttID, creatorEmail: userEmail});
+      return await this.timeTableClass.getTimetableByID({_id: ttID, creatorEmail});
     } catch {
       throw new Error('DB error');
     }
   }
 
-  async create(name, userEmail) {
+  async create(name, creatorEmail) {
     try {
       return await this.timeTableClass.addTimetable({
         name,
-        creatorEmail: userEmail
+        creatorEmail
       });
     } catch {
       throw new Error('DB error');
