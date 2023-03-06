@@ -1,5 +1,8 @@
-const {createHmac} = require('crypto');
 const randToken = require('rand-token');
+
+const SECOND = 1000;
+const MINUTE = SECOND * 60;
+const HOUR = MINUTE * 60;
 
 module.exports = class User {
   constructor(sessionClass) {
@@ -18,8 +21,8 @@ module.exports = class User {
     }
 
 
-    let expireAtAccessToken = Date.now() + 120e3;
-    let expireAtRefreshToken = Date.now() + 7200e3;
+    let expireAtAccessToken = Date.now() + MINUTE * 2;
+    let expireAtRefreshToken = Date.now() + HOUR * 2;
     let accessToken = randToken.generate(32);
     let refreshToken = randToken.generate(32);
 
