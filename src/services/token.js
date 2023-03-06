@@ -1,5 +1,3 @@
-const sessionClass = require('../entities/classes/session.js')
-
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 const HOUR = MINUTE * 60;
@@ -23,8 +21,8 @@ module.exports = class User {
 
     let expireAtAccessToken = Date.now() + MINUTE * 2;
     let expireAtRefreshToken = Date.now() + HOUR * 2;
-    let accessToken = sessionClass.generateToken();
-    let refreshToken = sessionClass.generateToken();
+    let accessToken = this.sessionClass.generateToken();
+    let refreshToken = this.sessionClass.generateToken();
 
 
     let result = await this.sessionClass.refresh(refToken, {

@@ -18,9 +18,9 @@ module.exports = {
     }
   },
 
-  async refresh(oldRefreshToken, ...changes) {
+  async refresh(oldRefreshToken, changes) {
     try {
-      return await sessionModel.updateOne({refreshToken: oldRefreshToken}, {$set: changes[0]});
+      return await sessionModel.updateOne({refreshToken: oldRefreshToken}, {$set: changes});
 
     } catch {
       throw new Error('DB error')
