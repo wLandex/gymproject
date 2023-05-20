@@ -8,6 +8,9 @@ import taskRoutes from "./infrastructure/routes/api/task";
 const timeTableRoutes = require("./infrastructure/routes/api/timetable");
 const userRoutes = require("./infrastructure/routes/api/user.js");
 
+const passwordRoutes = require("./infrastructure/routes/api/password.js")
+
+
 const staticLoginRoutes = require("./infrastructure/routes/static/login")
 
 const dotenv = require("dotenv");
@@ -36,6 +39,7 @@ timeTableRoutes(router);
 taskRoutes(router);
 userRoutes(router);
 tokenRoutes(router);
+passwordRoutes(router)
 
 staticLoginRoutes(staticRouter)
 

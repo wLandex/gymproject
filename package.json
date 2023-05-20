@@ -26,6 +26,7 @@
     "mongo-mock": "^4.2.0",
     "mongomock": "^0.1.2",
     "mongoose": "^6.8.4",
+    "nodemailer": "^6.9.2",
     "pug": "^3.0.2",
     "rand-token": "^1.0.1",
     "ts-node": "^10.9.1"

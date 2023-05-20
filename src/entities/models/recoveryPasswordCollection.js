@@ -1,8 +1,8 @@
 const {Schema, model} = require("mongoose");
 
-const recoveryPassword = new Schema(
+const recoveryPasswordCollection = new Schema(
     {
-      userEmail: {
+      email: {
         type: String,
         required: true,
       },
@@ -27,4 +27,4 @@ const recoveryPassword = new Schema(
     {versionKey: false}
 );
 
-module.exports = model("recoveryPassword", recoveryPassword);
+module.exports = model("recoveryPasswordCollection", recoveryPasswordCollection);

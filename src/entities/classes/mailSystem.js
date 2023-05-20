@@ -1,24 +1,34 @@
 const nodemailer = require('nodemailer');
-// Создаем транспорт для отправки писем
+
 let transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.mail.ru',
+  port: 465,
+  secure: true,
   auth: {
     user: 'gymprojecttest@mail.ru',
-    pass: '1235jxnzi1dzx',
+    pass: `${process.env.PASSWORD}`
   }
 });
-// Настройки письма
-let mailOptions = {
-  from: 'gymprojecttest@mail.ru',
-  to: 'landex617229@yandex.ru',
-  subject: 'Password Recovery',
-  text: 'Привет, это тестовое сообщение!'
-};
+
+
+module.exports = {
+  async sendEmail(sendTo, recoveryToken) {
+    let mailOptions = {
+      from: 'gymprojecttest@mail.ru',
+      to: `${sendTo}`,
+      subject: 'Password Recovery',
+      text: `Your password recovery token: ${recoveryToken}`
+    };
 // Отправляем письмо
-transporter.sendMail(mailOptions, function (error, info) {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('Письмо успешно отправлено: ' + info.response);
+    await transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Письмо успешно отправлено: ' + info.response);
+      }
+    });
   }
-});
+
+
+}
+
